@@ -7,22 +7,23 @@
     <title>Culinary Cuisine Dining Out</title>
     <link rel="stylesheet" type="text/css" href="assets/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 
 </head>
-<!-- Header -->
-<header id="header">
-    <h1>Culinary Cuisine Dining Out</h1>
-</header>
 
-<body>
-    <!-- Body -->
-    <section id="containerBox">
-        <h2>Search For Food Near You</h2>
+<body class="bg-gradient-to-r from-amber-200 via-emerald-100 to-cyan-300">
+    <header id="header" class="w-full text-center text-5xl p-7 bg-orange-400 font-bold border-b-2 border-black">
+    <h1>Dining Out</h1>
+    </header>
+
+
+    <section id="containerBox" class="text-2xl">
+        <h2 class="ml-20 mt-10 mb-10 font-bold">Search For Food Near You</h2>
         <form>
-            <input type="text" id="zipCode" name="zipCode" placeholder="Enter your zipcode" required>
-
-            <label for="foodType">Cuisine:</label>
-            <select id="foodType" name="foodType">
+            <input class="ml-20 mb-14 border-2 border-black bg-slate-300	" type="text" id="zipCode" name="zipCode" placeholder="Enter your zipcode" required>
+            <br>
+            <label for="foodType" class="ml-20 font-bold">Cuisine:</label>
+            <select id="foodType" class="bg-slate-300" name="foodType">
                 <option value="american">American</option>
                 <option value="barbecue">Barbecue</option>
                 <option value="chinese">Chinese</option>
@@ -38,8 +39,8 @@
                 <option value="sushi">Sushi</option>
                 <option value="thai">Thai</option>
             </select>
-
-            <button type="submit">Search</button>
+            <br>
+            <button type="submit" class="ml-20 mt-14 bg-orange-400 px-5 py-2 border-4 border-black border-double rounded-lg font-bold">Search</button>
 
         </form>
     </section>
