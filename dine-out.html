@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,21 +10,26 @@
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
 
+
 </head>
+
 
 <body class="bg-gradient-to-r from-amber-200 via-emerald-100 to-cyan-300">
     <header id="header" class="w-full text-center text-5xl p-7 bg-orange-400 font-bold border-b-2 border-black">
-    <h1>Dining Out</h1>
+        <h1>Dining Out</h1>
     </header>
 
 
+
+
     <section id="containerBox" class="text-2xl">
-        <h2 class="ml-20 mt-10 mb-10 font-bold">Search For Food Near You</h2>
-        <form>
-            <input class="ml-20 mb-14 border-2 border-black bg-slate-300" type="text" id="zipCode" name="zipCode" placeholder="Enter your zipcode" required>
+        <h2 class="mt-28 text-center font-bold">Search For Food Near You</h2>
+        <form class="text-center">
+            <input class="mt-8 border-2 border-black bg-slate-300" type="text" id="zipCode" name="zipCode"
+                placeholder="Enter your zipcode" required>
             <br>
-            <label for="foodType" class="ml-20 font-bold">Cuisine:</label>
-            <select id="foodType" class="bg-slate-300" name="foodType">
+            <label for="foodType" class="font-bold">Cuisine:</label>
+            <select id="foodType" class="mt-12 bg-slate-300" name="foodType">
                 <option value="american">American</option>
                 <option value="barbecue">Barbecue</option>
                 <option value="chinese">Chinese</option>
@@ -40,13 +46,17 @@
                 <option value="thai">Thai</option>
             </select>
             <br>
-            <button type="submit" class="ml-20 mt-14 bg-orange-400 px-5 py-2 border-4 border-black border-double rounded-lg font-bold">Search</button>
+            <button type="submit"
+                class="mt-8 bg-orange-400 px-5 py-2 border-2 border-black rounded-lg font-bold">Search</button>
+
 
         </form>
     </section>
 
+
     <!-- Javascript links-->
     <script src="assets/js/dine-out-script.js"></script>
 </body>
+
 
 </html>
