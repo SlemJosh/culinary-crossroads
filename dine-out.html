@@ -23,7 +23,7 @@
                 placeholder="Enter your zipcode" required>
             <br>
             <label for="foodType" class="font-bold">Cuisine:</label>
-            <select id="foodType" class="mt-12 bg-slate-300" name="foodType">
+            <select id="foodType" class="mt-2 bg-slate-300" name="foodType">
                 <option value="american">American</option>
                 <option value="barbecue">Barbecue</option>
                 <option value="chinese">Chinese</option>
@@ -41,25 +41,32 @@
             </select>
             <br>
             <button type="submit"
-                class="mt-8 bg-orange-400 px-5 py-2 border-2 border-black rounded-lg font-bold">Search</button>
+                class="bg-orange-400 px-5 py-2 border-2 border-black rounded-lg font-bold">Search</button>
         </form>
     </section>
 
-    <section id="resultsList" class="mt-4">
-        <h2 class="text-center font-bold">Search Results</h2>
-        <ul id="placesList" class="list-disc ml-8"></ul>
+    <section id="resultsList" class="flex justify-center items-center mt-8">
+        <div class="text-center">
+            <h2 class="text-center font-bold ">Search Results</h2>
+            <ul id="placesList" class="list-disc ml-8">
+                <!-- Results will be displayed here -->
+            </ul>
+        </div>
     </section>
 
-    <div id="placeModal" class="modal" style="display:none">
-        <div class="modal-content">
-            <span class="close" id="closeModal">&times;</span>
-            <h2 id="modalTitle">Place Details </h2>
+    <!-- Restaurant Details Modal -->
+    <div id="restaurantModal" class="modal hidden fixed inset-0 flex justify-center items-center z-50" style="background-color: rgba(0, 0, 0, 0.5);">
+        <div class="modal-content bg-white rounded-lg p-4 max-w-md text-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <span class="close absolute top-0 right-0 p-2 cursor-pointer" id="closeModal">&times;</span>
+            <h2 id="modalTitle" class="text-xl font-bold mb-4">Restaurant Details</h2>
             <div id="modalContent"></div>
         </div>
     </div>
 
     <!-- Javascript links -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDronXJJHk4f5fXEP71UYplrWNcWUFUNmk&libraries=places"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDronXJJHk4f5fXEP71UYplrWNcWUFUNmk&libraries=places"></script>
     <script src="assets/js/dine-out-script.js"></script>
 </body>
 
