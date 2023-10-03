@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,19 +8,13 @@
     <link rel="stylesheet" type="text/css" href="assets/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
-
-
 </head>
-
 
 <body class="bg-gradient-to-r from-amber-200 via-emerald-100 to-cyan-300">
     <header id="header" class="w-full p-7 bg-orange-400 font-bold border-b-2 border-black flex justify-between">
         <h1 class="text-5xl">Dining Out</h1>
         <a class="text-3xl mr-8 mt-3" href="index.html">Home</a>
     </header>
-
-
-
 
     <section id="containerBox" class="text-2xl">
         <h2 class="mt-28 text-center font-bold">Search For Food Near You</h2>
@@ -38,7 +31,7 @@
                 <option value="hamburger">Hamburgers</option>
                 <option value="indian">Indian</option>
                 <option value="italian">Italian</option>
-                <option value="japanese">Japense</option>
+                <option value="japanese">Japanese</option>
                 <option value="mexican">Mexican</option>
                 <option value="pizza">Pizza</option>
                 <option value="seafood">Seafood</option>
@@ -49,15 +42,25 @@
             <br>
             <button type="submit"
                 class="mt-8 bg-orange-400 px-5 py-2 border-2 border-black rounded-lg font-bold">Search</button>
-
-
         </form>
     </section>
 
+    <section id="resultsList" class="mt-4">
+        <h2 class="text-center font-bold">Search Results</h2>
+        <ul id="placesList" class="list-disc ml-8"></ul>
+    </section>
 
-    <!-- Javascript links-->
+    <div id="placeModal" class="modal" style="display:none">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2 id="modalTitle">Place Details </h2>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Javascript links -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDronXJJHk4f5fXEP71UYplrWNcWUFUNmk&libraries=places"></script>
     <script src="assets/js/dine-out-script.js"></script>
 </body>
-
 
 </html>
