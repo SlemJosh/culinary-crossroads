@@ -1,15 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Dine-In</title>
-        <link rel="normalize" href="./assets/css/normalize.css">
-        <link rel="stylesheet" href="./assets/css/style.css"> 
-    </head>
 
-    <body>
-        
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Culinary Cuisine Dining In</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+
+<body class="bg-gradient-to-r from-amber-200 via-emerald-100 to-cyan-300">
+    <header id="header" class="w-full p-7 bg-orange-400 font-bold border-b-2 border-black flex justify-between">
+        <h1 class="text-5xl">Dining In</h1>
+        <a class="text-3xl mr-8 mt-3" href="index.html">Home</a>
+    </header>
+    <main>
+
+
+        <div>
+            <div class="text-center mt-28">
+                <p class="text-xl">Please enter the name of the dish you would like to cook.
+                    <br> When you hit "Search", you will be presented with some recipes!</p>
+            </div>
+            <div class="text-center mt-12 mb-12">
+                <input type="text" id="Ingredient" placeholder="Enter Dish Keyword(s)"
+                    class="border-2 border-black bg-slate-300 text-2xl text-center">
+            </div>
+
+
+            <div class="text-center">
+                <button type="submit"
+                    class="bg-orange-400 px-5 py-2 border-2 border-black  rounded-lg font-bold text-xl">Search
+                    for Recipies</button>
+            </div>
+        </div>
+
+
+    </main>
+    <script src="assets/js/dine-in-script.js"></script>
+</body>
+
+
 </html>
