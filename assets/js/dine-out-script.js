@@ -7,7 +7,84 @@ document.addEventListener('DOMContentLoaded', function () {
 
     console.log('JavaScript is running');  // Testing JavaScript script linked and running
 
-    // Function to display places in the list
+// Function to perform the nearby food search
+function searchNearbyFood(zipCode, cuisine, searchRadius) {
+    const geocoder = new google.maps.Geocoder();
+
+    // Using Geocoding API to convert ZIP code to coordinates
+    geocoder.geocode({ address: zipCode }, function (results, status) {
+        if (status === 'OK' && results[0]) {
+            const location = results[0].geometry.location; // Get the location object
+            console.log('Geocoding successful. Location:', location);
+
+            // Create a request for nearby places
+            const request = {
+                location: location,
+                radius: parseFloat(searchRadius) * 1609.34, // We take whatever value they give us, and multiply it by the meters to get the search radius.  8046.7 meters = 5 miles
+                keyword: cuisine,
+            };
+
+            // Initialize the Places service and perform the nearby search
+            const service = new google.maps.places.PlacesService(document.createElement('div'));
+            service.nearbySearch(request, function (results, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    // Filter the results to include only places with "restaurant" in types
+                    const filteredResults = results.filter(place => {
+                        return place.types.includes('restaurant');
+                    });
+                    console.log('Nearby search results:', filteredResults);
+
+                    // Adding condition to display no search results
+                    if (filteredResults.length === 0) {
+                        displayNoResults();
+                    } else {
+                          // Calculate the number of columns based on the number of results
+                          let numberOfColumns = 1; // Default to 1 column
+
+                          if (filteredResults.length >= 8) {
+                              numberOfColumns = 2;
+                          }
+                          if (filteredResults.length >= 15) {
+                              numberOfColumns = 3;
+                          }
+                          
+                          const placesList = document.getElementById('placesList');
+                          placesList.style.columnCount = numberOfColumns;
+
+                        // Display the places list
+                        displayPlacesList(filteredResults);
+
+                        document.getElementById('resultsContainer').style.display = 'block'
+                    }
+                } else {
+                    // Handle errors here
+                    console.error('Nearby search failed:', status);
+                    displayNoResults();
+                }
+            });
+        } else {
+            // Handle geocoding errors here
+            console.error('Geocoding failed:', status);
+            displayErrorMessage();
+        }
+    });
+}
+
+// Event listener for the form submission
+    document.querySelector('form').addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent the default form submission
+        console.log('Form submitted');
+        const zipCode = document.getElementById('zipCode').value;
+        const cuisine = document.getElementById('foodType').value;
+        const searchRadius = document.getElementById('searchRadius').value;
+
+        // Call the function to search for nearby food
+        console.log('Submitting form with ZIP code:', zipCode, 'and cuisine:', cuisine);
+        searchNearbyFood(zipCode, cuisine, searchRadius);
+    });
+
+
+// Display the list of restaurants function
     function displayPlacesList(places) {
         const placesList = document.getElementById('placesList');
         placesList.innerHTML = ''; // Clear the previous list
@@ -23,8 +100,11 @@ document.addEventListener('DOMContentLoaded', function () {
             places.forEach((place, index) => {
                 const listItem = document.createElement('li');
                 const nameLink = document.createElement('a');
+                //adding some code so that if multiple results have the same name, we can list their city next to them to differentiate
+                const cityInfo = place.vicinity.split(',')[1].trim();
                 nameLink.href = '#';
-                nameLink.innerText = place.name;
+
+                nameLink.innerText = `${place.name} (${cityInfo})`;
                 nameLink.onclick = function () {
                     showRestaurantDetails(place);
                 };
@@ -36,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('Displaying places list:', places);
         }
     }
-
+// Show Restaurant Details Function in a Modal
     function showRestaurantDetails(restaurant) {
         const modal = document.getElementById('restaurantModal');
         const modalTitle = document.getElementById('modalTitle');
@@ -80,67 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     }
 
-    // Event listener for the form submission
-    document.querySelector('form').addEventListener('submit', (event) => {
-        event.preventDefault(); // Prevent the default form submission
-        console.log('Form submitted');
-        const zipCode = document.getElementById('zipCode').value;
-        const cuisine = document.getElementById('foodType').value;
-
-        // Call the function to search for nearby food
-        console.log('Submitting form with ZIP code:', zipCode, 'and cuisine:', cuisine);
-        searchNearbyFood(zipCode, cuisine);
-    });
-
-    // Function to perform the nearby food search
-    function searchNearbyFood(zipCode, cuisine) {
-        const geocoder = new google.maps.Geocoder();
-
-        // Using Geocoding API to convert ZIP code to coordinates
-        geocoder.geocode({ address: zipCode }, function (results, status) {
-            if (status === 'OK' && results[0]) {
-                const location = results[0].geometry.location; // Get the location object
-                console.log('Geocoding successful. Location:', location);
-
-                // Create a request for nearby places
-                const request = {
-                    location: location,
-                    radius: 8046.72, // 5-mile radius, converted to meters.
-                    keyword: cuisine,
-                };
-
-                // Initialize the Places service and perform the nearby search
-                const service = new google.maps.places.PlacesService(document.createElement('div'));
-                service.nearbySearch(request, function (results, status) {
-                    if (status === google.maps.places.PlacesServiceStatus.OK) {
-                        // Filter the results to include only places with "restaurant" in types
-                        const filteredResults = results.filter(place => {
-                            return place.types.includes('restaurant');
-                        });
-                        console.log('Nearby search results:', filteredResults);
-
-                        // Adding condition to display no search results
-                        if (filteredResults.length === 0) {
-                            displayNoResults();
-                        } else {
-                            // Display the places list
-                            displayPlacesList(filteredResults);
-                        }
-                    } else {
-                        // Handle errors here
-                        console.error('Nearby search failed:', status);
-                        displayNoResults();
-                    }
-                });
-            } else {
-                // Handle geocoding errors here
-                console.error('Geocoding failed:', status);
-                displayErrorMessage();
-            }
-        });
-    }
-
-    // Zero results in the array for restaurant searches
+// Zero results in the array for restaurant searches
     function displayNoResults() {
         const placesList = document.getElementById('placesList');
         placesList.innerHTML = ''; // Clear the previous list
@@ -149,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
         placesList.appendChild(noResults);
     }
 
-    // If geocoding fails another function and message to run.
+// If geocoding fails another function and message to run.
     function displayErrorMessage() {
         const placesList = document.getElementById('placesList');
         placesList.innerHTML = ''; // Clear the previous list
@@ -158,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
         placesList.appendChild(errorMessage);
     }
 
-    // Function for coverting our rating on the modal into a star visualization.
+// Function for coverting our rating on the modal into a star visualization.
     function getStarRatingHTML(rating) {
         const maxStars = 5; // Maximum number of stars
         const starIcon = '★'; // Unicode character for a star
@@ -183,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    // Converting the price_level given to us in the array pull, and assigning it a string that will be more accessible than just some numbers.
+// Converting the price_level given to us in the array pull, and assigning it a string that will be more accessible than just some numbers.
     function convertPriceLevel(priceLevel) {
         switch (priceLevel) {
             case 0:

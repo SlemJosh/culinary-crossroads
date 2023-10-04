@@ -16,7 +16,7 @@
         <a class="text-3xl mr-8 mt-3" href="index.html">Home</a>
     </header>
 
-    <section id="containerBox" class="text-2xl">
+    <section id="searchContainer" class="text-2xl">
         <h2 class="mt-28 text-center font-bold">Search For Food Near You</h2>
         <form class="text-center">
             <input class="mt-8 border-2 border-black bg-slate-300" type="text" id="zipCode" name="zipCode"
@@ -40,23 +40,34 @@
                 <option value="thai">Thai</option>
             </select>
             <br>
-            <button type="submit"
-                class="bg-orange-400 px-5 py-2 border-2 border-black rounded-lg font-bold">Search</button>
+            <label for="searchRadius" class="font-bold">Search Radius:</label>
+            <select id="searchRadius" class="mt-2 bg-slate-300" name="searchRadius">
+                <option value="2">2 miles</option>
+                <option value="5">5 miles</option>
+                <option value="10">10 miles</option>
+            </select>
+            <br>
+            <button type="submit" class="bg-orange-400 px-5 py-2 border-2 border-black rounded-lg font-bold">Search</button>
         </form>
     </section>
 
-    <section id="resultsList" class="flex justify-center items-center mt-8">
+    <section id="resultsContainer" class="flex justify-center items-center mt-8" style="display: none;">
         <div class="text-center">
-            <h2 class="text-center font-bold ">Search Results</h2>
-            <ul id="placesList" class="list-disc ml-8">
-                <!-- Results will be displayed here -->
-            </ul>
+            <h2 class="text-center font-bold text-2xl underline">Search Results</h2>
+            <br>
+            <div class="mx-auto">
+                <ul id="placesList" class="list-none">
+                    <!-- Results will be displayed here -->
+                </ul>
+            </div>
         </div>
     </section>
 
     <!-- Restaurant Details Modal -->
-    <div id="restaurantModal" class="modal hidden fixed inset-0 flex justify-center items-center z-50" style="background-color: rgba(0, 0, 0, 0.5);">
-        <div class="modal-content bg-white rounded-lg p-4 max-w-md text-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    <div id="restaurantModal" class="modal hidden fixed inset-0 flex justify-center items-center z-50"
+        style="background-color: rgba(0, 0, 0, 0.5);">
+        <div class="modal-content bg-white rounded-lg p-4 max-w-md text-center"
+            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
             <span class="close absolute top-0 right-0 p-2 cursor-pointer" id="closeModal">&times;</span>
             <h2 id="modalTitle" class="text-xl font-bold mb-4">Restaurant Details</h2>
             <div id="modalContent"></div>
