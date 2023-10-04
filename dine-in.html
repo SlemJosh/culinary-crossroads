@@ -20,22 +20,69 @@
     <main>
 
 
-        <div>
+        <div id="searchArea">
             <div class="text-center mt-28">
                 <p class="text-xl">Please enter the name of the dish you would like to cook.
                     <br> When you hit "Search", you will be presented with some recipes!</p>
             </div>
             <div class="text-center mt-12 mb-12">
-                <input type="text" id="Ingredient" placeholder="Enter Dish Keyword(s)"
+                <input id="userInput" type="text" id="Ingredient" placeholder="Enter Dish Keyword(s)"
                     class="border-2 border-black bg-slate-300 text-2xl text-center">
             </div>
 
 
             <div class="text-center">
-                <button type="submit"
+                <button id="searchButton" type="submit"
                     class="bg-orange-400 px-5 py-2 border-2 border-black  rounded-lg font-bold text-xl">Search
                     for Recipies</button>
             </div>
+        </div>
+
+
+        <div id="recipiesDisplay" class="text-center grid grid-cols-3 gap-4 hidden m-6">
+            <div id='recipe-1' class="bg-white rounded-lg shadow-md p-4">
+                <img id='picture-1' src="" alt="Card Image" class="w-full h-auto rounded-md">
+                <div class="mt-4">
+                  <h2 class="text-xl font-semibold">Recipe Title</h2>
+                  <p class="text-gray-600">URL goes here.</p>
+                </div>
+            </div>
+            <div id='recipe-2' class="bg-white rounded-lg shadow-md p-4">
+                <img id='picture-2' src="" alt="Card Image" class="w-full h-auto rounded-md">
+                <div class="mt-4">
+                  <h2 class="text-xl font-semibold">Recipe Title</h2>
+                  <p class="text-gray-600">URL goes here.</p>
+                </div>
+            </div>
+            <div id='recipe-3' class="bg-white rounded-lg shadow-md p-4">
+                <img id='picture-3' src="" alt="Card Image" class="w-full h-auto rounded-md">
+                <div class="mt-4">
+                  <h2 class="text-xl font-semibold">Recipe Title</h2>
+                  <p class="text-gray-600">URL goes here.</p>
+                </div>
+            </div>
+            <div id='recipe-4' class="bg-white rounded-lg shadow-md p-4">
+                <img id='picture-4' src="" alt="Card Image" class="w-full h-auto rounded-md">
+                <div class="mt-4">
+                  <h2 class="text-xl font-semibold">Recipe Title</h2>
+                  <p class="text-gray-600">URL goes here.</p>
+                </div>
+            </div>
+            <div id='recipe-5' class="bg-white rounded-lg shadow-md p-4">
+                <img id='picture-5' src="" alt="Card Image" class="w-full h-auto rounded-md">
+                <div class="mt-4">
+                  <h2 class="text-xl font-semibold">Recipe Title</h2>
+                  <p class="text-gray-600">URL goes here.</p>
+                </div>
+            </div>
+            <div id='recipe-6' class="bg-white rounded-lg shadow-md p-4">
+                <img id='picture-6' src="" alt="Card Image" class="w-full h-auto rounded-md">
+                <div class="mt-4">
+                  <h2 class="text-xl font-semibold">Recipe Title</h2>
+                  <p class="text-gray-600">URL goes here.</p>
+                </div>
+            </div>
+
         </div>
 
 
