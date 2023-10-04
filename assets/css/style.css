@@ -47,15 +47,21 @@
 }
 
 /* Media query for smaller screens (e.g., phones) */
+
 @media (max-width: 767px) {
     /* Override styles for smaller screens */
     #placesList {
-        column-count: 1; /* Display results in a single column */
+        column-count: 1 !important; /* Display results in a single column */
         column-gap: 0; /* Remove gap between columns */
     }
     
     #placesList li {
         margin-bottom: 15px; /* Increase spacing between items for better touch interaction */
         padding: 15px; /* Increase padding for touch targets */
+    }
+    
+    /* Adjust the styles for the modal */
+    .modal-content {
+        max-width: 90%; /* Reduce the width of the modal content on smaller screens */
     }
 }
