@@ -32,6 +32,24 @@ function searchNearbyFood(zipCode, cuisine, searchRadius) {
                     const filteredResults = results.filter(place => {
                         return place.types.includes('restaurant');
                     });
+
+                    filteredResults.sort((a, b) => {
+                        const distanceA = calculateDistance(
+                            location.lat(),
+                            location.lng(),
+                            a.geometry.location.lat(),
+                            a.geometry.location.lng()
+                        );
+                        const distanceB = calculateDistance(
+                            location.lat(),
+                            location.lng(),
+                            b.geometry.location.lat(),
+                            b.geometry.location.lng()
+                        );
+                        return distanceA - distanceB;
+                    });
+
+
                     console.log('Nearby search results:', filteredResults);
 
                     // Adding condition to display no search results
@@ -200,6 +218,21 @@ function searchNearbyFood(zipCode, cuisine, searchRadius) {
         starsHTML += `<span style="color: gold;">${starIcon.repeat(emptyStarCount)}</span>`;
 
         return starsHTML;
+    }
+
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371; // Radius of the Earth in kilometers
+        const dLat = (lat2 - lat1) * (Math.PI / 180);
+        const dLon = (lon2 - lon1) * (Math.PI / 180);
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * (Math.PI / 180)) *
+            Math.cos(lat2 * (Math.PI / 180)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const distance = R * c; // Distance in kilometers
+        return distance;
     }
 
 
