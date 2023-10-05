@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     console.log('JavaScript is running');  // Testing JavaScript script linked and running
 
+    const savedSearchParams = getSavedSearchParameters();
+
 // Function to perform the nearby food search
 function searchNearbyFood(zipCode, cuisine, searchRadius) {
     const geocoder = new google.maps.Geocoder();
@@ -97,25 +99,22 @@ function searchNearbyFood(zipCode, cuisine, searchRadius) {
         const searchRadius = document.getElementById('searchRadius').value;
 
         // Call  the function to save the search parameters
-        getSavedSearchParameters(zipCode, cuisine, searchRadius);
+        saveSearchParameters(zipCode, cuisine, searchRadius);
 
         // Call the function to search for nearby food
         console.log('Submitting form with ZIP code:', zipCode, 'and cuisine:', cuisine);
         searchNearbyFood(zipCode, cuisine, searchRadius);
     });
 
-    document.getElementById('retrieveSearchButton').addEventListener('click', () => {
+    document.getElementById('displayHistoryButton').addEventListener('click', () => {
         const savedSearchParams = getSavedSearchParameters();
 
-        if (savedSearchParams.length > 0) {
+        if (savedSearchParams.length > 0) {               
 
-            const searchHistoryList = document.getElementById('searchHistoryList');
-            searchHistoryList.innerHTML = '';
-
-            savedSearches.forEach((savedSearch, index) => {
+            savedSearchParams.forEach((savedSearch, index) => {
                 const listItem = document.createElement('li');
                 listItem.innerText = `Search ${index + 1}: Zip Code - ${savedSearch.zipCode}, Cuisine - ${savedSearch.cuisine}, Radius - ${savedSearch.searchRadius} miles`;
-                searchHistoryList.appendChild(listItem);
+              
             });
         }else {
             
@@ -123,6 +122,10 @@ function searchNearbyFood(zipCode, cuisine, searchRadius) {
         }
     });
 
+    document.getElementById('displayHistoryButton').addEventListener('click', () => {
+        displaySavedSearches(); // Call the function to display saved searches
+    });
+   
 
 // Display the list of restaurants function
     function displayPlacesList(places) {
@@ -199,6 +202,21 @@ function searchNearbyFood(zipCode, cuisine, searchRadius) {
             }
         };
     }
+// function for displaying Saved Searches
+function displaySavedSearches() {
+    const savedSearchParams = getSavedSearchParameters();
+    const savedSearchList = document.createElement('ul'); // Create the list element
+
+    savedSearchParams.forEach((savedSearch, index) => {
+        const listItem = document.createElement('li');
+        listItem.innerText = `Search ${index + 1}: Zip Code - ${savedSearch.zipCode}, Cuisine - ${savedSearch.cuisine}, Radius - ${savedSearch.searchRadius} miles`;
+
+        savedSearchList.appendChild(listItem);
+    });
+
+    // Append the list to the HTML
+    document.getElementById('previousSearches').appendChild(savedSearchList);
+}
 
 // Zero results in the array for restaurant searches
     function displayNoResults() {
@@ -224,15 +242,29 @@ function searchNearbyFood(zipCode, cuisine, searchRadius) {
             cuisine,
             searchRadius,
         };
-        savedSearchParams.push(searchParams);
-        localStorage.setItem('searchParams', JSON.stringify(searchParams));
+        let savedSearches = JSON.parse(localStorage.getItem('savedSearches')) || [];
+        savedSearches.push(searchParams);
+        localStorage.setItem('savedSearches', JSON.stringify(savedSearches));
     }
 
 // Function for getting previously searched parameters
     function getSavedSearchParameters() {
-        const savedSearchParams = localStorage.getItem('searchParams');
-        return savedSearchParams ? JSON.parse(savedSearchParams) : [];
+        const savedSearches = JSON.parse (localStorage.getItem('savedSearches')) || [];
+        return savedSearches;
     }
+
+    // Event listener for the "Clear History" button
+document.getElementById('clearHistoryButton').addEventListener('click', () => {
+    clearSearchHistory();
+});
+
+// Function to clear the search history
+function clearSearchHistory() {
+    localStorage.removeItem('savedSearches'); // Remove the saved searches from local storage
+    const savedSearchList = document.getElementById('previousSearches');
+    savedSearchList.innerHTML = ''; // Clear the displayed search history
+}
+
 
 // Function for coverting our rating on the modal into a star visualization.
     function getStarRatingHTML(rating) {
