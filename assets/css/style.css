@@ -1,0 +1,67 @@
+
+/* Dine Out CSS*/
+
+#placesList {
+    list-style: none;
+    padding: 0;
+    column-count: 2;
+    column-gap: 20px;
+}
+
+#placesList li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: silver; /* Subtle background color */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, text-decoration 0.3s ease;
+}
+
+#placesList li:hover {
+    background-color: #e0e0e0; /* Darker background on hover */
+    text-decoration: underline; /* Underline on hover */
+}
+
+#placesList a {
+    text-decoration: none;
+    color: #333; /* Link color */
+}
+
+#placesList a:hover {
+    color: #007bff; /* Link color on hover */
+}
+
+/* Add an icon next to the restaurant name (you can find or create your own icon) */
+#placesList .icon {
+    margin-right: 5px;
+}
+
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 50;
+}
+
+/* Media query for smaller screens (e.g., phones) */
+
+@media (max-width: 767px) {
+    /* Override styles for smaller screens */
+    #placesList {
+        column-count: 1 !important; /* Display results in a single column */
+        column-gap: 0; /* Remove gap between columns */
+    }
+    
+    #placesList li {
+        margin-bottom: 15px; /* Increase spacing between items for better touch interaction */
+        padding: 15px; /* Increase padding for touch targets */
+    }
+    
+    /* Adjust the styles for the modal */
+    .modal-content {
+        max-width: 90%; /* Reduce the width of the modal content on smaller screens */
+    }
+}
