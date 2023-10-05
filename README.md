@@ -20,7 +20,7 @@ Can't decide if you want to eat out or cook in your own kitchen?  With Culinary 
 
 ### Contributers
 
-Joshua Covington
-Joshua Higginson
-Joshua Slem
+Joshua Covington \
+Joshua Higginson \
+Joshua Slem \
 Samuel Monson
