@@ -96,9 +96,31 @@ function searchNearbyFood(zipCode, cuisine, searchRadius) {
         const cuisine = document.getElementById('foodType').value;
         const searchRadius = document.getElementById('searchRadius').value;
 
+        // Call  the function to save the search parameters
+        getSavedSearchParameters(zipCode, cuisine, searchRadius);
+
         // Call the function to search for nearby food
         console.log('Submitting form with ZIP code:', zipCode, 'and cuisine:', cuisine);
         searchNearbyFood(zipCode, cuisine, searchRadius);
+    });
+
+    document.getElementById('retrieveSearchButton').addEventListener('click', () => {
+        const savedSearchParams = getSavedSearchParameters();
+
+        if (savedSearchParams.length > 0) {
+
+            const searchHistoryList = document.getElementById('searchHistoryList');
+            searchHistoryList.innerHTML = '';
+
+            savedSearches.forEach((savedSearch, index) => {
+                const listItem = document.createElement('li');
+                listItem.innerText = `Search ${index + 1}: Zip Code - ${savedSearch.zipCode}, Cuisine - ${savedSearch.cuisine}, Radius - ${savedSearch.searchRadius} miles`;
+                searchHistoryList.appendChild(listItem);
+            });
+        }else {
+            
+            console.log('No saved search parameters found.');
+        }
     });
 
 
@@ -194,6 +216,22 @@ function searchNearbyFood(zipCode, cuisine, searchRadius) {
         const errorMessage = document.createElement('p');
         errorMessage.innerText = 'An error occurred while searching for nearby places.';
         placesList.appendChild(errorMessage);
+    }
+// Function for storing parameters for search
+    function saveSearchParameters(zipCode, cuisine, searchRadius) {
+        const searchParams = {
+            zipCode,
+            cuisine,
+            searchRadius,
+        };
+        savedSearchParams.push(searchParams);
+        localStorage.setItem('searchParams', JSON.stringify(searchParams));
+    }
+
+// Function for getting previously searched parameters
+    function getSavedSearchParameters() {
+        const savedSearchParams = localStorage.getItem('searchParams');
+        return savedSearchParams ? JSON.parse(savedSearchParams) : [];
     }
 
 // Function for coverting our rating on the modal into a star visualization.
