@@ -4,9 +4,7 @@
 #placesList {
     list-style: none;
     padding: 0;
-    column-count: 2;
-    column-gap: 20px;
-}
+   }
 
 #placesList li {
     margin-bottom: 10px;
@@ -24,17 +22,39 @@
 
 #placesList a {
     text-decoration: none;
-    color: #333; /* Link color */
+    color: #333; 
 }
 
 #placesList a:hover {
-    color: #007bff; /* Link color on hover */
+    color: #007bff; 
 }
 
-/* Add an icon next to the restaurant name (you can find or create your own icon) */
-#placesList .icon {
-    margin-right: 5px;
+#resultsContainer {
+    text-align: center;
+    padding-top: 20px;
 }
+
+#noResultsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Use viewport height to center vertically */
+    text-align: center;
+}
+
+/* Centered container class */
+.centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+    text-align: center;
+}
+
+.centered-container p{
+    margin: 0;
+}
+
 
 .modal {
     display: flex;
