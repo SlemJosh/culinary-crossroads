@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         } else {
                             placesList.style.columnCount = getNumberOfColumns(filteredResults.length);
                             displayPlacesList(filteredResults);
-                            displayHistoryButton.style.display = 'inline-block';
+                            
                             clearHistoryButton.style.display = 'inline-block';
                         }
                     } else {
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Submitting form with ZIP code:', zipCode, 'and cuisine:', cuisine);
         searchNearbyFood(zipCode, cuisine, searchRadius);
 
-        displayHistoryButton.style.display = 'inline-block';
+        
     });
 
     displayHistoryButton.addEventListener('click', () => {
@@ -167,8 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function checkSavedSearches() {
         const savedSearchParams = getSavedSearchParameters();
         clearHistoryButton.style.display = savedSearchParams.length > 0 ? 'inline-block' : 'none';
-        displayHistoryButton.style.display = savedSearchParams.length > 0 ? 'inline-block' : 'none';
-    }
+            }
 
     function displaySavedSearches() {
         const savedSearchParams = getSavedSearchParameters();
@@ -181,10 +180,15 @@ document.addEventListener('DOMContentLoaded', function () {
             savedSearchList.appendChild(listItem);
         });
 
+        const previousSearches = document.getElementById('previousSearches');
         previousSearches.innerHTML = '';
         previousSearches.appendChild(savedSearchList);
 
+        document.getElementById('resultsContainer').style.display = 'none';
+
         checkSavedSearches();
+
+
     }
 
     function saveSearchParameters(zipCode, cuisine, searchRadius) {
