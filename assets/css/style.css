@@ -29,6 +29,14 @@
     color: #007bff; 
 }
 
+
+.search-link {
+    color: blue; 
+    text-decoration: underline; 
+    cursor: pointer; 
+}
+
+
 #resultsContainer {
     text-align: center;
     padding-top: 20px;
