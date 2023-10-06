@@ -20,10 +20,10 @@
         <a class="text-3xl mr-8 mt-3" href="index.html">Home</a>
     </header>
     <section id="previousSearches">
-        <button id="displayHistoryButton" class="bg-orange-400 px-5 py-2 border-2 border-black rounded-lg font-bold">Display History</button>
-        <button id="clearHistoryButton" class="bg-red-400 px-5 py-2 border-2 border-black rounded-lg font-bold ml-2">Clear History</button>
+        <button id="displayHistoryButton" class="bg-orange-400 px-5 py-2 border-2 border-black rounded-lg font-bold" style="display: none;">Display History</button>
+        <button id="clearHistoryButton" class="bg-red-400 px-5 py-2 border-2 border-black rounded-lg font-bold ml-2" style="display: none;">Clear History</button>
     </section>
-    </section>
+    
 
     <section id="searchContainer" class="text-2xl">
 
@@ -65,20 +65,16 @@
         </form>
     </section>
 
-    <section id="resultsContainer" class="flex justify-center items-center mt-8" style="display: none;">
-        <div class="text-center">
-            <h2 class="text-center font-bold text-2xl underline">Search Results</h2>
-            <br>
-            <div class="mx-auto">
-                <ul id="placesList" class="list-none">
-                    <!-- Results will be displayed here -->
+    <section id="resultsContainer" class="centered-container" style="display: none;">
+              <div class="text-center">
+                <h2 class="text-center font-bold text-2xl underline">Search Results</h2>
+                <div class="centered-container">
+                <p id="noResultsMessage" class="centered-container">No results found for this search.</p> 
+                </div>
+                <ul id="placesList">
+                    <!-- This is where the search results will be displayed -->
                 </ul>
             </div>
-            <button id="loadMoreButton" class="bg-orange-400 px-5 py-2 border-2 border-black rounded-lg font-bold hidden">
-                Load More Results
-            </button>
-        </div>
-
     </section>
 
     <!-- Restaurant Details Modal -->

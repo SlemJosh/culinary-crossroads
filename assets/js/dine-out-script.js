@@ -2,151 +2,120 @@
 
 // API_KEY = "AIzaSyDronXJJHk4f5fXEP71UYplrWNcWUFUNmk";
 
-document.addEventListener('DOMContentLoaded', function () {
-    const API_KEY = "AIzaSyDronXJJHk4f5fXEP71UYplrWNcWUFUNmk"; // Replace with your actual API key
+const API_KEY = "AIzaSyDronXJJHk4f5fXEP71UYplrWNcWUFUNmk";
 
-    console.log('JavaScript is running');  // Testing JavaScript script linked and running
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('JavaScript is running');
 
     const savedSearchParams = getSavedSearchParameters();
+    const resultsContainer = document.getElementById('resultsContainer');
+    const displayHistoryButton = document.getElementById('displayHistoryButton');
+    const clearHistoryButton = document.getElementById('clearHistoryButton');
+    const placesList = document.getElementById('placesList');
+    const noResultsMessage = document.getElementById('noResultsMessage');
+    const previousSearches = document.getElementById('previousSearches');
 
-// Function to perform the nearby food search
-function searchNearbyFood(zipCode, cuisine, searchRadius) {
-    const geocoder = new google.maps.Geocoder();
+    function searchNearbyFood(zipCode, cuisine, searchRadius) {
+        resultsContainer.style.display = 'block';
 
-    // Using Geocoding API to convert ZIP code to coordinates
-    geocoder.geocode({ address: zipCode }, function (results, status) {
-        if (status === 'OK' && results[0]) {
-            const location = results[0].geometry.location; // Get the location object
-            console.log('Geocoding successful. Location:', location);
+        const geocoder = new google.maps.Geocoder();
 
-            // Create a request for nearby places
-            const request = {
-                location: location,
-                radius: parseFloat(searchRadius) * 1609.34, // We take whatever value they give us, and multiply it by the meters to get the search radius.  8046.7 meters = 5 miles
-                keyword: cuisine,
-            };
+        geocoder.geocode({ address: zipCode }, function (results, status) {
+            if (status === 'OK' && results[0]) {
+                const location = results[0].geometry.location;
+                console.log('Geocoding successful. Location:', location);
 
-            // Initialize the Places service and perform the nearby search
-            const service = new google.maps.places.PlacesService(document.createElement('div'));
-            service.nearbySearch(request, function (results, status) {
-                if (status === google.maps.places.PlacesServiceStatus.OK) {
-                    // Filter the results to include only places with "restaurant" in types
-                    const filteredResults = results.filter(place => {
-                        return place.types.includes('restaurant');
-                    });
+                const request = {
+                    location: location,
+                    radius: parseFloat(searchRadius) * 1609.34,
+                    keyword: cuisine,
+                };
 
-                    filteredResults.sort((a, b) => {
-                        const distanceA = calculateDistance(
-                            location.lat(),
-                            location.lng(),
-                            a.geometry.location.lat(),
-                            a.geometry.location.lng()
-                        );
-                        const distanceB = calculateDistance(
-                            location.lat(),
-                            location.lng(),
-                            b.geometry.location.lat(),
-                            b.geometry.location.lng()
-                        );
-                        return distanceA - distanceB;
-                    });
+                const service = new google.maps.places.PlacesService(document.createElement('div'));
 
+                placesList.innerHTML = '';
 
-                    console.log('Nearby search results:', filteredResults);
+                service.nearbySearch(request, function (results, status) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        const filteredResults = results.filter(place => place.types.includes('restaurant'));
 
-                    // Adding condition to display no search results
-                    if (filteredResults.length === 0) {
-                        displayNoResults();
+                        filteredResults.sort((a, b) => {
+                            const distanceA = calculateDistance(
+                                location.lat(),
+                                location.lng(),
+                                a.geometry.location.lat(),
+                                a.geometry.location.lng()
+                            );
+                            const distanceB = calculateDistance(
+                                location.lat(),
+                                location.lng(),
+                                b.geometry.location.lat(),
+                                b.geometry.location.lng()
+                            );
+                            return distanceA - distanceB;
+                        });
+
+                        console.log('Nearby search results:', filteredResults);
+
+                        if (filteredResults.length === 0) {
+                            displayNoResults();
+                            
+                        } else {
+                            placesList.style.columnCount = getNumberOfColumns(filteredResults.length);
+                            displayPlacesList(filteredResults);
+                            displayHistoryButton.style.display = 'inline-block';
+                            clearHistoryButton.style.display = 'inline-block';
+                        }
                     } else {
-                          // Calculate the number of columns based on the number of results
-                          let numberOfColumns = 1; // Default to 1 column
-
-                          if (filteredResults.length >= 8) {
-                              numberOfColumns = 2;
-                          }
-                          if (filteredResults.length >= 15) {
-                              numberOfColumns = 3;
-                          }
-                          
-                          const placesList = document.getElementById('placesList');
-                          placesList.style.columnCount = numberOfColumns;
-
-                        // Display the places list
-                        displayPlacesList(filteredResults);
-
-                        document.getElementById('resultsContainer').style.display = 'block'
+                        console.error('Nearby search failed:', status);
+                        displayNoResults();
                     }
-                } else {
-                    // Handle errors here
-                    console.error('Nearby search failed:', status);
-                    displayNoResults();
-                }
-            });
-        } else {
-            // Handle geocoding errors here
-            console.error('Geocoding failed:', status);
-            displayErrorMessage();
-        }
-    });
-}
+                });
+            } else {
+                console.error('Geocoding failed:', status);
+                displayErrorMessage();
+            }
+        });
+    }
 
-// Event listener for the form submission
     document.querySelector('form').addEventListener('submit', (event) => {
-        event.preventDefault(); // Prevent the default form submission
+        event.preventDefault();
         console.log('Form submitted');
         const zipCode = document.getElementById('zipCode').value;
         const cuisine = document.getElementById('foodType').value;
         const searchRadius = document.getElementById('searchRadius').value;
 
-        // Call  the function to save the search parameters
         saveSearchParameters(zipCode, cuisine, searchRadius);
-
-        // Call the function to search for nearby food
         console.log('Submitting form with ZIP code:', zipCode, 'and cuisine:', cuisine);
         searchNearbyFood(zipCode, cuisine, searchRadius);
+
+        displayHistoryButton.style.display = 'inline-block';
     });
 
-    document.getElementById('displayHistoryButton').addEventListener('click', () => {
-        const savedSearchParams = getSavedSearchParameters();
-
-        if (savedSearchParams.length > 0) {               
-
-            savedSearchParams.forEach((savedSearch, index) => {
-                const listItem = document.createElement('li');
-                listItem.innerText = `Search ${index + 1}: Zip Code - ${savedSearch.zipCode}, Cuisine - ${savedSearch.cuisine}, Radius - ${savedSearch.searchRadius} miles`;
-              
-            });
-        }else {
-            
-            console.log('No saved search parameters found.');
-        }
+    displayHistoryButton.addEventListener('click', () => {
+        displaySavedSearches();
     });
 
-    document.getElementById('displayHistoryButton').addEventListener('click', () => {
-        displaySavedSearches(); // Call the function to display saved searches
+    clearHistoryButton.addEventListener('click', () => {
+        clearSearchHistory();
+        clearHistoryButton.style.display = 'none';
     });
-   
 
-// Display the list of restaurants function
+    checkSavedSearches();
+
     function displayPlacesList(places) {
-        const placesList = document.getElementById('placesList');
-        placesList.innerHTML = ''; // Clear the previous list
+        clearNoResultsMessage();
+        placesList.innerHTML = '';
 
-        // Adding a condition if there are no search results. We want the user to see this and know that it's still working
         if (places.length === 0) {
-            // If the places array is empty, display a message
-            const noResults = document.createElement('p');
-            noResults.innerText = 'No results found for this search.';
-            placesList.appendChild(noResults);
+            displayNoResults();
         } else {
-            // If there are results. Show them
             places.forEach((place, index) => {
                 const listItem = document.createElement('li');
                 const nameLink = document.createElement('a');
-                //adding some code so that if multiple results have the same name, we can list their city next to them to differentiate
                 const cityInfo = place.vicinity.split(',')[1].trim();
-                nameLink.href = '#';
 
+                nameLink.href = '#';
                 nameLink.innerText = `${place.name} (${cityInfo})`;
                 nameLink.onclick = function () {
                     showRestaurantDetails(place);
@@ -155,11 +124,10 @@ function searchNearbyFood(zipCode, cuisine, searchRadius) {
                 listItem.appendChild(nameLink);
                 placesList.appendChild(listItem);
             });
-
             console.log('Displaying places list:', places);
         }
     }
-// Show Restaurant Details Function in a Modal
+
     function showRestaurantDetails(restaurant) {
         const modal = document.getElementById('restaurantModal');
         const modalTitle = document.getElementById('modalTitle');
@@ -169,7 +137,6 @@ function searchNearbyFood(zipCode, cuisine, searchRadius) {
         const priceLevel = convertPriceLevel(restaurant.price_level);
 
         modalContent.style.backgroundColor = 'silver';
-
         modalTitle.innerText = restaurant.name;
 
         modalContent.innerHTML = `
@@ -178,64 +145,48 @@ function searchNearbyFood(zipCode, cuisine, searchRadius) {
             <p><strong>Price Level:</strong> ${priceLevel}</p>
         `;
 
-        // Link for getting directions on the modal
         getDirections.innerText = 'Get Directions';
         getDirections.href = `https://www.google.com/maps/dir/?api=1&destination=${restaurant.geometry.location.lat()},${restaurant.geometry.location.lng()}`;
-        getDirections.target = '_blank';  // We want the link to open in a new tab so they don't lose their place.
-
-        // Adding inline CSS to the link color
+        getDirections.target = '_blank';
         getDirections.style.color = 'blue';
 
-        // Adding the getDirections link onto the modal
         modalContent.appendChild(getDirections);
-
         modal.style.display = 'block';
 
         closeModal.onclick = function () {
             modal.style.display = 'none';
         };
 
-        // Opens the modal  
         window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = 'none';
             }
         };
     }
-// function for displaying Saved Searches
-function displaySavedSearches() {
-    const savedSearchParams = getSavedSearchParameters();
-    const savedSearchList = document.createElement('ul'); // Create the list element
 
-    savedSearchParams.forEach((savedSearch, index) => {
-        const listItem = document.createElement('li');
-        listItem.innerText = `Search ${index + 1}: Zip Code - ${savedSearch.zipCode}, Cuisine - ${savedSearch.cuisine}, Radius - ${savedSearch.searchRadius} miles`;
-
-        savedSearchList.appendChild(listItem);
-    });
-
-    // Append the list to the HTML
-    document.getElementById('previousSearches').appendChild(savedSearchList);
-}
-
-// Zero results in the array for restaurant searches
-    function displayNoResults() {
-        const placesList = document.getElementById('placesList');
-        placesList.innerHTML = ''; // Clear the previous list
-        const noResults = document.createElement('p');
-        noResults.innerText = 'No results found for this search.';
-        placesList.appendChild(noResults);
+    function checkSavedSearches() {
+        const savedSearchParams = getSavedSearchParameters();
+        clearHistoryButton.style.display = savedSearchParams.length > 0 ? 'inline-block' : 'none';
+        displayHistoryButton.style.display = savedSearchParams.length > 0 ? 'inline-block' : 'none';
     }
 
-// If geocoding fails another function and message to run.
-    function displayErrorMessage() {
-        const placesList = document.getElementById('placesList');
-        placesList.innerHTML = ''; // Clear the previous list
-        const errorMessage = document.createElement('p');
-        errorMessage.innerText = 'An error occurred while searching for nearby places.';
-        placesList.appendChild(errorMessage);
+    function displaySavedSearches() {
+        const savedSearchParams = getSavedSearchParameters();
+        const savedSearchList = document.createElement('ul');
+
+        savedSearchParams.forEach((savedSearch, index) => {
+            const listItem = document.createElement('li');
+            listItem.innerText = `Search ${index + 1}: Zip Code - ${savedSearch.zipCode}, Cuisine - ${savedSearch.cuisine}, Radius - ${savedSearch.searchRadius} miles`;
+
+            savedSearchList.appendChild(listItem);
+        });
+
+        previousSearches.innerHTML = '';
+        previousSearches.appendChild(savedSearchList);
+
+        checkSavedSearches();
     }
-// Function for storing parameters for search
+
     function saveSearchParameters(zipCode, cuisine, searchRadius) {
         const searchParams = {
             zipCode,
@@ -247,67 +198,44 @@ function displaySavedSearches() {
         localStorage.setItem('savedSearches', JSON.stringify(savedSearches));
     }
 
-// Function for getting previously searched parameters
     function getSavedSearchParameters() {
-        const savedSearches = JSON.parse (localStorage.getItem('savedSearches')) || [];
-        return savedSearches;
+        return JSON.parse(localStorage.getItem('savedSearches')) || [];
     }
 
-    // Event listener for the "Clear History" button
-document.getElementById('clearHistoryButton').addEventListener('click', () => {
-    clearSearchHistory();
-});
+    document.getElementById('clearHistoryButton').addEventListener('click', () => {
+        clearSearchHistory();
+    });
 
-// Function to clear the search history
-function clearSearchHistory() {
-    localStorage.removeItem('savedSearches'); // Remove the saved searches from local storage
-    const savedSearchList = document.getElementById('previousSearches');
-    savedSearchList.innerHTML = ''; // Clear the displayed search history
-}
+    function clearSearchHistory() {
+        localStorage.removeItem('savedSearches');
+        const savedSearchList = document.getElementById('previousSearches');
+        savedSearchList.innerHTML = '';
+    }
 
+    function clearAndCenterNoResultsMessage() {
+        noResultsMessage.style.display = 'block';
+        noResultsMessage.innerText = 'No results found for this search.';
+        placesList.innerHTML = '';
+    }
 
-// Function for coverting our rating on the modal into a star visualization.
-    function getStarRatingHTML(rating) {
-        const maxStars = 5; // Maximum number of stars
-        const starIcon = '★'; // Unicode character for a star
-        const fullStarCount = Math.floor(rating); // Number of full stars
-        const halfStarCount = Math.ceil(rating - fullStarCount); // Number of half stars (if any)
-        const emptyStarCount = maxStars - fullStarCount - halfStarCount; // Number of empty stars
+    function displayNoResults() {
+        clearAndCenterNoResultsMessage();
+    }
 
-        let starsHTML = '';
+    function clearNoResultsMessage() {
+        noResultsMessage.style.display = 'none';
+    }
 
-        // Add full stars
-        starsHTML += `<span style="color: gold;">${starIcon.repeat(fullStarCount)}</span>`;
-
-        // Add half star if necessary
-        if (halfStarCount > 0) {
-            starsHTML += `<span style="color: gold;">½</span>`;
+    function getNumberOfColumns(numResults) {
+        if (numResults <= 7) {
+            return 1;
+        } else if (numResults <= 14) {
+            return 2;
+        } else {
+            return 3;
         }
-
-        // Add empty stars
-        starsHTML += `<span style="color: gold;">${starIcon.repeat(emptyStarCount)}</span>`;
-
-        return starsHTML;
     }
 
- // Haversine formula to calculate distance between two sets of coordinates   
-    function calculateDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371; // Radius of the Earth in kilometers
-        const dLat = (lat2 - lat1) * (Math.PI / 180);
-        const dLon = (lon2 - lon1) * (Math.PI / 180);
-        const a =
-            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(lat1 * (Math.PI / 180)) *
-            Math.cos(lat2 * (Math.PI / 180)) *
-            Math.sin(dLon / 2) *
-            Math.sin(dLon / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        const distance = R * c; // Distance in kilometers
-        return distance;
-    }
-
-
-// Converting the price_level given to us in the array pull, and assigning it a string that will be more accessible than just some numbers.
     function convertPriceLevel(priceLevel) {
         switch (priceLevel) {
             case 0:
@@ -321,7 +249,40 @@ function clearSearchHistory() {
             case 4:
                 return 'Very Expensive';
             default:
-                return 'N/A'; // Handle unknown or missing values
+                return 'N/A';
         }
     }
+
+    function getStarRatingHTML(rating) {
+        const maxStars = 5;
+        const starIcon = '★';
+        const fullStarCount = Math.floor(rating);
+        const halfStarCount = Math.ceil(rating - fullStarCount);
+        const emptyStarCount = maxStars - fullStarCount - halfStarCount;
+
+        let starsHTML = '';
+
+        starsHTML += `<span style="color: gold;">${starIcon.repeat(fullStarCount)}</span>`;
+
+        if (halfStarCount > 0) {
+            starsHTML += `<span style="color: gold;">½</span>`;
+        }
+
+        starsHTML += `<span style="color: gold;">${starIcon.repeat(emptyStarCount)}</span>`;
+
+        return starsHTML;
+    }
+
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371;
+        const dLat = (lat2 - lat1) * (Math.PI / 180);
+        const dLon = (lon2 - lon1) * (Math.PI / 180);
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const distance = R * c;
+        return distance;
+    }
+    checkSavedSearches();
 });
