@@ -5,7 +5,6 @@
 const API_KEY = "AIzaSyDronXJJHk4f5fXEP71UYplrWNcWUFUNmk";
 
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('JavaScript is running');
 
     const savedSearchParams = getSavedSearchParameters();
     const resultsContainer = document.getElementById('resultsContainer');
@@ -23,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
         geocoder.geocode({ address: zipCode }, function (results, status) {
             if (status === 'OK' && results[0]) {
                 const location = results[0].geometry.location;
-                console.log('Geocoding successful. Location:', location);
+
 
                 const request = {
                     location: location,
@@ -55,15 +54,15 @@ document.addEventListener('DOMContentLoaded', function () {
                             return distanceA - distanceB;
                         });
 
-                        console.log('Nearby search results:', filteredResults);
+
 
                         if (filteredResults.length === 0) {
                             displayNoResults();
-                            
+
                         } else {
                             placesList.style.columnCount = getNumberOfColumns(filteredResults.length);
                             displayPlacesList(filteredResults);
-                            
+
                             clearHistoryButton.style.display = 'inline-block';
                         }
                     } else {
@@ -80,16 +79,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.querySelector('form').addEventListener('submit', (event) => {
         event.preventDefault();
-        console.log('Form submitted');
+
         const zipCode = document.getElementById('zipCode').value;
         const cuisine = document.getElementById('foodType').value;
         const searchRadius = document.getElementById('searchRadius').value;
 
         saveSearchParameters(zipCode, cuisine, searchRadius);
-        console.log('Submitting form with ZIP code:', zipCode, 'and cuisine:', cuisine);
+
         searchNearbyFood(zipCode, cuisine, searchRadius);
 
-        
+
     });
 
     displayHistoryButton.addEventListener('click', () => {
@@ -124,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 listItem.appendChild(nameLink);
                 placesList.appendChild(listItem);
             });
-            console.log('Displaying places list:', places);
+
         }
     }
 
@@ -167,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function checkSavedSearches() {
         const savedSearchParams = getSavedSearchParameters();
         clearHistoryButton.style.display = savedSearchParams.length > 0 ? 'inline-block' : 'none';
-            }
+    }
 
     function displaySavedSearches() {
         const savedSearchParams = getSavedSearchParameters();
@@ -182,14 +181,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Applying styling so that people know they can click on the items as links
             searchLink.classList.add('search-link');
-            
-            searchLink.addEventListener('click', () =>{
-                
+
+            searchLink.addEventListener('click', () => {
+
                 searchNearbyFood(savedSearch.zipCode, savedSearch.cuisine, savedSearch.searchRadius);
             });
 
-           listItem.appendChild(searchLink);
-           savedSearchList.appendChild(listItem);
+            listItem.appendChild(searchLink);
+            savedSearchList.appendChild(listItem);
 
             savedSearchList.appendChild(listItem);
         });
@@ -201,7 +200,6 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('resultsContainer').style.display = 'none';
 
         checkSavedSearches();
-
 
     }
 
