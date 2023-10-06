@@ -175,7 +175,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
         savedSearchParams.forEach((savedSearch, index) => {
             const listItem = document.createElement('li');
-            listItem.innerText = `Search ${index + 1}: Zip Code - ${savedSearch.zipCode}, Cuisine - ${savedSearch.cuisine}, Radius - ${savedSearch.searchRadius} miles`;
+            const searchLink = document.createElement('a');
+
+            searchLink.innerText = `Search ${index + 1}: Zip Code - ${savedSearch.zipCode}, Cuisine - ${savedSearch.cuisine}, Radius - ${savedSearch.searchRadius} miles`;
+            searchLink.href = '#';
+
+            // Applying styling so that people know they can click on the items as links
+            searchLink.classList.add('search-link');
+            
+            searchLink.addEventListener('click', () =>{
+                
+                searchNearbyFood(savedSearch.zipCode, savedSearch.cuisine, savedSearch.searchRadius);
+            });
+
+           listItem.appendChild(searchLink);
+           savedSearchList.appendChild(listItem);
 
             savedSearchList.appendChild(listItem);
         });
