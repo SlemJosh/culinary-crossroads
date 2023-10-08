@@ -15,6 +15,12 @@ const loadMoreButton = document.querySelector('#loadMore');
 const backOnePageButton = document.querySelector('#backOne');
 const backToFirstPageButton = document.querySelector('#firstPage');
 
+inputEl.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        handleFormSubmit(event);
+    }
+});
+
 // Run fetchAPI when search button is selected
 function handleFormSubmit(event) {
     event.preventDefault();  // Prevents the default behavior
@@ -166,3 +172,5 @@ function backOne() {
     // Display the recipes for the current page
     displayRecipes(totalRecipes.slice(displayedRecipeCount - 6, displayedRecipeCount));
 }
+
+
