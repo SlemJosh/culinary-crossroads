@@ -2,7 +2,7 @@
 // API_ID = "74440f9d";
 // API_KEY = "187b5ec2f2d8afb91eaa812faef32e21"
 
-//API info
+// API info
 const API_ID = "74440f9d";
 const API_KEY = "187b5ec2f2d8afb91eaa812faef32e21";
 
@@ -11,24 +11,26 @@ var searchButton = document.querySelector('#searchButton');
 var searchArea = document.querySelector('#searchArea');
 var recipiesArea = document.querySelector('#recipiesDisplay');
 
-//Run fetchAPI when search button is selected
+const loadMoreButton = document.querySelector('#loadMore');
+
+// Run fetchAPI when search button is selected
 function handleFormSubmit(event) {
     event.preventDefault();  // Prevents the default value
     var userInput = inputEl.value.trim();
 
+    // Varifying that the user puts something into the search bar.
     if (userInput){
         fetchAPI();
-        console.log(userInput)
         document.querySelector('.error-message').classList.add('hidden');
     }
     else {
         document.querySelector('.error-message').classList.remove('hidden');
-        console.log('Please enter an ingredient.')
+        
     }
     
 }
 
-//Use user input with the API URL to select specific recipies based on the input
+// Use user input with the API URL to select specific recipies based on the input
 const fetchAPI = function () {
     var userInput = inputEl.value;
     const queryURL = 'https://api.edamam.com/api/recipes/v2?type=public&q=' + userInput + '&app_id=' + API_ID + '&app_key=' + API_KEY;
@@ -39,17 +41,23 @@ const fetchAPI = function () {
         .then((response) => {
             if (response.ok) {
                 response.json().then((data) => {
-                    //Run function to display recipies that the user is searching for
+                    // Run function to display recipies that the user is searching for
                     const recipes = data.hits.map(hit => hit.recipe);
-                    displayRecipes(recipes);
+                    console.log('API search results:', recipes);
+                    totalRecipes = recipes;
+                    displayRecipes(recipes.slice(0, displayedRecipeCount));
+
+                    if(displayedRecipeCount < recipes.length){
+                        loadMoreButton.style.display = 'block';
+                    }
                 });
             } else {
-                //Display error message if unable to get a vaild API response
+                // Display error message if unable to get a vaild API response
                 console.error('API error:', response.status, response.statusText);
             }
         })
         .catch((error) => {
-            //Display error message if there is a network error
+            // Display error message if there is a network error
             console.error('Network error:', error);
         });
 };
@@ -92,3 +100,80 @@ function displayRecipes(recipes) {
 }
 
 searchButton.addEventListener('click', handleFormSubmit);
+
+// Add an event listener to the "Load More" button
+
+loadMoreButton.addEventListener('click', loadMoreRecipes);
+
+let displayedRecipeCount = 6; // Initial count of displayed recipes
+
+const backOnePageButton = document.querySelector('#backOne');
+const backToFirstPageButton = document.querySelector('#firstPage');
+
+
+backOnePageButton.style.display = 'none';
+
+// Function to load more recipes
+function loadMoreRecipes() {
+    const nextBatch = totalRecipes.slice(displayedRecipeCount, displayedRecipeCount +6);
+   
+    // Display additional recipes if available
+    if (nextBatch.length > 0) {
+        displayedRecipeCount += 6;
+        displayRecipes(nextBatch);
+
+        if (displayedRecipeCount >= 12) {
+            backOnePageButton.style.display = 'block';
+        }
+
+    } else {
+        loadMoreButton.style.display = "none";
+
+        if (displayedRecipeCount >= totalRecipes.length){
+            backToFirstPageButton.style.display = 'block';
+        }
+    }
+   
+}
+
+backToFirstPageButton.addEventListener('click', firstPage);
+
+ // Function to activate a button to take us back to the first page of results.
+function firstPage(){
+    
+    displayedRecipeCount = 6;
+
+    displayRecipes(totalRecipes.slice(0, displayedRecipeCount));
+
+    backOnePageButton.style.display = 'none';
+    backToFirstPageButton.style.display = 'none';
+
+    if (totalRecipes.length > displayedRecipeCount){
+        loadMoreButton.style.display = 'block';
+    }
+
+    // This will scroll to the top of the page with results, considering the button is at the bottom it will make it more user friendly to see the list from the top again
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+
+    });
+}
+
+backOnePageButton.addEventListener('click', backOne);
+
+// Function to go back one page
+function backOne() {
+    // Go back one page by reducing the displayedRecipeCount by 6
+    displayedRecipeCount -= 6;
+
+    // Hide the "Back One Page" button when we reach the first page of results
+    if (displayedRecipeCount < 6) {
+        backOnePageButton.style.display = 'none';
+        
+        displayedRecipeCount = 6;
+    }
+
+    // Display the recipes for the current page
+    displayRecipes(totalRecipes.slice(displayedRecipeCount - 6, displayedRecipeCount));
+}
