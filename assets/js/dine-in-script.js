@@ -43,7 +43,6 @@ const fetchAPI = function () {
                 response.json().then((data) => {
                     // Run function to display recipes that the user is searching for
                     const recipes = data.hits.map(hit => hit.recipe);
-                    console.log('API search results:', recipes);
                     totalRecipes = recipes;
                     displayRecipes(recipes.slice(0, displayedRecipeCount));
 
@@ -66,6 +65,7 @@ const fetchAPI = function () {
 function displayRecipes(recipes) {
     const recipesDisplay = document.querySelector('#recipesDisplay');
     recipesDisplay.innerHTML = '';
+
     // Constant to show the top 6 recipes
     const topRecipes = recipes.slice(0, 6);
 
@@ -87,7 +87,7 @@ function displayRecipes(recipes) {
         recipeContainer.appendChild(recipeLink);
 
         const recipeName = document.createElement('p');
-        recipeName.textContent = `${index + 1}. ${recipe.label}`;
+        recipeName.textContent = recipe.label;
         recipeName.classList.add('recipe-name', 'pt-2');
         recipeName.classList.add('text-xl', 'font-semibold')
 
