@@ -1,4 +1,6 @@
-//Edamam API
+// Edamam API
+// API_ID = "74440f9d";
+// API_KEY = "187b5ec2f2d8afb91eaa812faef32e21"
 
 //API info
 const API_ID = "74440f9d";
@@ -10,10 +12,20 @@ var searchArea = document.querySelector('#searchArea');
 var recipiesArea = document.querySelector('#recipiesDisplay');
 
 //Run fetchAPI when search button is selected
-function handleFormSubmit() {
-    var userInput = inputEl.value;
-    console.log(userInput)
-    fetchAPI();
+function handleFormSubmit(event) {
+    event.preventDefault();  // Prevents the default value
+    var userInput = inputEl.value.trim();
+
+    if (userInput){
+        fetchAPI();
+        console.log(userInput)
+        document.querySelector('.error-message').classList.add('hidden');
+    }
+    else {
+        document.querySelector('.error-message').classList.remove('hidden');
+        console.log('Please enter an ingredient.')
+    }
+    
 }
 
 //Use user input with the API URL to select specific recipies based on the input
@@ -42,14 +54,14 @@ const fetchAPI = function () {
         });
 };
 
-//Display recipies that the user searched for
+// Display recipies that the user searched for
 function displayRecipes(recipes) {
     const recipiesDisplay = document.querySelector('#recipiesDisplay');
     recipiesDisplay.innerHTML = '';
-    //Const to show the top 6 recipies
+    // Const to show the top 6 recipies
     const topRecipes = recipes.slice(0, 6);
 
-    //Create a container, image, and link for each of the top recipies
+    // Create a container, image, and link for each of the top recipies
     topRecipes.forEach((recipe, index) => {
         const recipeContainer = document.createElement('div');
         recipeContainer.classList.add('recipe-container', 'bg-blue-400', 'rounded-lg', 'shadow-md', 'p-4', 'border-2', 'border-black');

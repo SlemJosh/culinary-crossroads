@@ -22,20 +22,24 @@
 
         <div id="searchArea">
             <div class="text-center mt-28">
-                <p class="text-xl">Please enter the name of the dish you would like to cook.
+                <p class="text-xl">Please enter the ingredient(s) you have at home.
+                    <br> You can enter one ingredient or multiple ingredients.
                     <br> When you hit "Search", you will be presented with some recipes!</p>
             </div>
             <div class="text-center mt-12 mb-12">
-                <input id="userInput" type="text" id="Ingredient" placeholder="Enter Dish Keyword(s)"
+                <input id="userInput" type="text" id="Ingredient" placeholder="Your ingredient(s) here"
                     class="border-2 border-black bg-slate-300 text-2xl text-center">
+                <br>          
+                <br>
+                <p class="error-message text-red-500 hidden">Please enter an ingredient.</p>
             </div>
-
 
             <div class="text-center">
                 <button id="searchButton" type="submit"
                     class="bg-orange-400 px-5 py-2 border-2 border-black  rounded-lg font-bold text-xl">Search
                     for Recipies</button>
             </div>
+          
         </div>
 
 

@@ -1,6 +1,6 @@
 // Google Maps API Script (without map and markers)
 
-// API_KEY = "AIzaSyDronXJJHk4f5fXEP71UYplrWNcWUFUNmk";
+// API_KEY = AIzaSyDronXJJHk4f5fXEP71UYplrWNcWUFUNmk;
 
 const API_KEY = "AIzaSyDronXJJHk4f5fXEP71UYplrWNcWUFUNmk";
 
