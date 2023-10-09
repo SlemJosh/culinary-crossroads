@@ -123,6 +123,11 @@ function loadMoreRecipes() {
         if (displayedRecipeCount >= 12) {
             backOnePageButton.style.display = 'block';
         }
+        // Adding a scroll to the top command, as when you are on a phone, you stay at the bottom and are forced to swipe up to view the additional boxes
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     } else {
         loadMoreButton.style.display = "none";
 
