@@ -22,25 +22,50 @@
 
         <div id="searchArea">
             <div class="text-center mt-28">
-                <p class="text-xl">Please enter the name of the dish you would like to cook.
+                <p class="text-xl">Please enter the ingredient(s) you have at home.
+                    <br> You can enter one ingredient or multiple ingredients.
                     <br> When you hit "Search", you will be presented with some recipes!</p>
             </div>
             <div class="text-center mt-12 mb-12">
-                <input id="userInput" type="text" id="Ingredient" placeholder="Enter Dish Keyword(s)"
+                <input id="userInput" type="text" placeholder="Your ingredient(s) here"
                     class="border-2 border-black bg-slate-300 text-2xl text-center">
+                <br>          
+                <br>
+                <p class="error-message text-red-500 hidden">Please enter an ingredient.</p>
             </div>
-
 
             <div class="text-center">
                 <button id="searchButton" type="submit"
                     class="bg-orange-400 px-5 py-2 border-2 border-black  rounded-lg font-bold text-xl">Search
-                    for Recipies</button>
+                    for Recipes</button>
             </div>
+          
         </div>
 
 
-        <div id="recipiesDisplay" class="text-center grid grid-cols-1 md:grid-cols-3 gap-6 hidden m-10">
+        <div id="recipesDisplay" class="text-center grid grid-cols-1 md:grid-cols-3 gap-6 hidden m-10">
+            
+    
+     
         </div>
+
+        <!-- Buttons for displaying more results, previous results, and jumping back to the first page of results -->
+        <div class="text-center flex justify-center mt-4">
+            <button id="backOne" class="bg-orange-400 px-5 py-2 border-2 border-black rounded-lg font-bold text-x1 mt-4" 
+            style="display: none; margin: 0 auto;" title="Back One Page">
+                Back One Page
+            </button>
+            <button id="loadMore" class="bg-blue-400 px-5 py-2 border-2 border-black rounded-lg font-bold text-x1 mt-4" 
+            style="display: none; margin: 0 auto;" title="Load More">
+                Load More
+            </button>
+            <button id="firstPage" class="bg-orange-400 px-5 py-2 border-2 border-black rounded-lg font-bold text-x1 mt-4" 
+            style="display: none; margin: 0 auto;" title="Back to First Page">
+                Back to First Page
+            </button>
+        </div>
+        
+    
 
 
     </main>
