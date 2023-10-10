@@ -174,6 +174,10 @@ function backOne() {
         
         displayedRecipeCount = 6;
     }
+    window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
 
     // Display the recipes for the current page
     displayRecipes(totalRecipes.slice(displayedRecipeCount - 6, displayedRecipeCount));
