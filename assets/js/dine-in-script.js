@@ -15,6 +15,7 @@ const loadMoreButton = document.querySelector('#loadMore');
 const backOnePageButton = document.querySelector('#backOne');
 const backToFirstPageButton = document.querySelector('#firstPage');
 
+// Allow "enter" to be used to submit input
 inputEl.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         handleFormSubmit(event);
