@@ -9,7 +9,7 @@ Can't decide if you want to eat out or cook in your own kitchen?  With Culinary 
 ## Screenshot
 
 <img width="1119" alt="image" src="https://github.com/SlemJosh/culinary-crossroads/assets/136753578/ab960b94-bd98-4c64-9d09-a2f3dc9c6f68">
-<img width="1127" alt="image" src="https://github.com/SlemJosh/culinary-crossroads/assets/136753578/0a2d11d3-3ebf-40e0-ae04-99df82aaa6b7">
+<img width="958" alt="image" src="https://github.com/SlemJosh/culinary-crossroads/assets/136753578/05e3fcef-2dcd-499e-9011-a4874699a80c">
 <img width="1126" alt="image" src="https://github.com/SlemJosh/culinary-crossroads/assets/136753578/35073ecf-568a-4789-8a2d-e1bd7bf02112">
 
 ### Directions for Use
